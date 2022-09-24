@@ -5,11 +5,9 @@ const userRouter = require('./routes/userRoutes')
 
 const app = express()
 
-// 1) middlewares
-
 app.use(morgan('dev'))
-
 app.use(express.json())
+app.use(express.static(`${__dirname}/public`))
 
 app.use((req, res, next) => {
     console.log('Hello from the middleware 💪🏻')
@@ -21,12 +19,7 @@ app.use((req, res, next) => {
     next()
 })
 
-// 2) route handlers
-
-// 3) routes
-
 app.use('/api/v1/tours/', tourRouter)
 app.use('/api/v1/users/', userRouter)
 
-// 4) Start server
 module.exports = app
