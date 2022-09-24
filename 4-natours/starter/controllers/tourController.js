@@ -6,6 +6,18 @@ const tours = JSON.parse(
     )
 )
 
+exports.checkBody = (req, res, next) => {
+    const body = req.body
+    if (!body.name || !body.price) {
+        return res.status(400).json({
+            status: 'fail',
+            message:
+                'You did not specify the body correctly',
+        })
+    }
+    next()
+}
+
 exports.checkID = (req, res, next, val) => {
     console.log(`Tour id is: ${val}`)
     if (req.params.id * 1 > tours.length) {
