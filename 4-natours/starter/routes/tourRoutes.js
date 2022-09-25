@@ -15,5 +15,5 @@ router
     .get(tourController.getTour)
     .patch(tourController.updateTour)
     .delete(tourController.deleteTour)
-
+//
 module.exports = router
