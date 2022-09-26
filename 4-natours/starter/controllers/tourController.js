@@ -4,7 +4,7 @@ exports.getAllTours = async (req, res) => {
     try {
         console.log(req.query)
         //Build query
-        // 1) Filtering
+        // 1A) Filtering
         const queryObj = { ...req.query }
         const excluededFields = [
             'page',
@@ -17,16 +17,36 @@ exports.getAllTours = async (req, res) => {
             (el) => delete queryObj[el]
         )
 
-        // 2) Advanced filtering
+        // 1B) Advanced filtering
         let queryStr = JSON.stringify(queryObj)
         queryStr = queryStr.replace(
             /\b(gte|gt|lte|lt)\b/g,
             (match) => `$${match}`
         )
 
-        const query = Tour.find(
+        let query = Tour.find(
             JSON.parse(queryStr)
         )
+
+        // 2) Sorting
+        if (req.query.sort) {
+            const sortBy = req.query.sort
+                .split(',')
+                .join(' ')
+            query = query.sort(sortBy)
+        } else {
+            query = query.sort('-createdAt')
+        }
+
+        // 3) Field limitting
+        if (req.query.fields) {
+            const fields = req.query.fields
+                .split(',')
+                .join(' ')
+            query = query.select(fields)
+        } else {
+            query = query.select('-__v')
+        }
 
         // execute query
         const tours = await query
