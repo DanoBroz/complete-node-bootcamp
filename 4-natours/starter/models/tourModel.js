@@ -96,6 +96,16 @@ tourSchema.pre('save', function (next) {
     next()
 })
 
+// tourSchema.pre('save', (next) => {
+//     console.log('Willl save document...')
+//     next()
+// })
+
+// tourSchema.post('save', (doc, next) => {
+//     console.log(doc)
+//     next()
+// })
+
 const Tour = mongoose.model('Tour', tourSchema)
 
 module.exports = Tour
