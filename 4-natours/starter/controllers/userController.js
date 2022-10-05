@@ -64,6 +64,19 @@ exports.updateMe = catchAsync(
     }
 )
 
+exports.deleteMe = catchAsync(
+    async (req, res, next) => {
+        await User.findOneAndUpdate(req.user.id, {
+            active: false,
+        })
+
+        res.status(204).json({
+            status: 'success',
+            data: null,
+        })
+    }
+)
+
 exports.getUser = (req, res) => {
     res.status(500).json({
         status: 'error',
